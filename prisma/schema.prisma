@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Colaborador {
+  id               String           @id @default(uuid())
+  nome             String
+  email            String           @unique
+  cpf              String           @unique
+  dataNascimento   DateTime
+  cargo            String
+  departamento     String
+  dataContratacao  DateTime         @default(now())
+  deletedAt        DateTime?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  
+  documentos       Documento[]
+  vinculos         ColaboradorTipoDocumento[]
+}
+
+model TipoDocumento {
+  id               String           @id @default(uuid())
+  nome             String           @unique
+  descricao        String?
+  obrigatorio      Boolean          @default(true)
+  deletedAt        DateTime?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  
+  vinculos         ColaboradorTipoDocumento[]
+  documentos       Documento[]
+}
+
+model ColaboradorTipoDocumento {
+  id               String           @id @default(uuid())
+  colaboradorId    String
+  tipoDocumentoId  String
+  status           StatusVinculo    @default(ATIVO)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  
+  colaborador      Colaborador      @relation(fields: [colaboradorId], references: [id])
+  tipoDocumento    TipoDocumento    @relation(fields: [tipoDocumentoId], references: [id])
+  documentos       Documento[]
+
+  @@unique([colaboradorId, tipoDocumentoId])
+}
+
+model Documento {
+  id                          String           @id @default(uuid())
+  colaboradorId               String
+  tipoDocumentoId             String
+  colaboradorTipoDocumentoId  String
+  versao                      Int              @default(1)
+  dataEnvio                   DateTime         @default(now())
+  arquivoNome                 String
+  arquivoTamanho              Int
+  mimeType                    String
+  observacao                  String?
+  status                      StatusDocumento  @default(ATIVO)
+  deletedAt                   DateTime?
+  createdAt                   DateTime         @default(now())
+  
+  colaborador                 Colaborador      @relation(fields: [colaboradorId], references: [id])
+  tipoDocumento               TipoDocumento    @relation(fields: [tipoDocumentoId], references: [id])
+  colaboradorTipoDocumento    ColaboradorTipoDocumento @relation(fields: [colaboradorTipoDocumentoId], references: [id])
+  versoesAnteriores           DocumentoVersao[]
+
+  @@unique([colaboradorId, tipoDocumentoId, versao])
+  @@index([colaboradorId])
+  @@index([tipoDocumentoId])
+  @@index([status])
+}
+
+model DocumentoVersao {
+  id              String    @id @default(uuid())
+  documentoId     String
+  versao          Int
+  dataEnvio       DateTime
+  arquivoNome     String
+  arquivoTamanho  Int
+  mimeType        String
+  observacao      String?
+  createdAt       DateTime  @default(now())
+  
+  documento       Documento @relation(fields: [documentoId], references: [id])
+
+  @@unique([documentoId, versao])
+}
+
+enum StatusVinculo {
+  ATIVO
+  INATIVO
+}
+
+enum StatusDocumento {
+  ATIVO
+  SUBSTITUIDO
+}
