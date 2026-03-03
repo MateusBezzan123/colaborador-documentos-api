@@ -13,8 +13,6 @@ export class DocumentoService {
     if (error) {
       throw new AppError(error.details[0].message, 400);
     }
-
-    // Verificar se o colaborador tem vínculo com este tipo de documento
     const vinculo = await vinculoRepo.findByColaboradorAndTipo(
       data.colaboradorId,
       data.tipoDocumentoId
@@ -27,7 +25,7 @@ export class DocumentoService {
       );
     }
 
-    // Enviar documento
+
     const documento = await documentoRepo.create(data, vinculo.id);
 
     return documento;

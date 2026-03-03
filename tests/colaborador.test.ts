@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 
 describe('Colaborador Controller', () => {
   beforeAll(async () => {
-    // Limpar dados de teste
     await prisma.documento.deleteMany();
     await prisma.colaboradorTipoDocumento.deleteMany();
     await prisma.colaborador.deleteMany();
@@ -39,7 +38,7 @@ describe('Colaborador Controller', () => {
       .post('/api/colaboradores')
       .send({
         nome: 'Maria Santos',
-        email: 'joao@email.com', // Email já usado
+        email: 'joao@email.com',
         cpf: '98765432101',
         dataNascimento: '1992-02-02',
         cargo: 'Analista',

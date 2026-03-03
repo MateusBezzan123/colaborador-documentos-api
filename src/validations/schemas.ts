@@ -6,7 +6,12 @@ export const colaboradorSchema = Joi.object({
   cpf: Joi.string().pattern(/^\d{11}$/).required().messages({
     'string.pattern.base': 'CPF deve conter 11 dígitos numéricos'
   }),
-  dataNascimento: Joi.date().max('now').required(),
+  dataNascimento: Joi.alternatives().try(
+    Joi.date().iso().required(),
+    Joi.string().pattern(/^\d{4}-\d{2}-\d{2}$/).required()
+  ).required().messages({
+    'alternatives.match': 'Data deve estar no formato ISO (YYYY-MM-DD)'
+  }),
   cargo: Joi.string().required(),
   departamento: Joi.string().required()
 });

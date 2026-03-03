@@ -5,7 +5,6 @@ import { IDocumento } from '../models/interfaces';
 
 export class DocumentoRepository {
   async create(data: IDocumento, colaboradorTipoDocumentoId: string): Promise<Documento> {
-    // Verificar se já existe documento ativo para este vínculo
     const documentoAtivo = await prisma.documento.findFirst({
       where: {
         colaboradorId: data.colaboradorId,
@@ -17,13 +16,11 @@ export class DocumentoRepository {
     let versao = 1;
 
     if (documentoAtivo) {
-      // Atualizar documento atual para SUBSTITUIDO
       await prisma.documento.update({
         where: { id: documentoAtivo.id },
         data: { status: 'SUBSTITUIDO' }
       });
 
-      // Criar versão anterior
       await prisma.documentoVersao.create({
         data: {
           documentoId: documentoAtivo.id,
@@ -39,7 +36,6 @@ export class DocumentoRepository {
       versao = documentoAtivo.versao + 1;
     }
 
-    // Criar novo documento
     return prisma.documento.create({
       data: {
         colaboradorId: data.colaboradorId,

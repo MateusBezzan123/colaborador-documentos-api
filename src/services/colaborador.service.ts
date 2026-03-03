@@ -8,14 +8,12 @@ const colaboradorRepo = new ColaboradorRepository();
 const vinculoRepo = new ColaboradorTipoDocumentoRepository();
 
 export class ColaboradorService {
-  async create(data: IColaborador) {
-    // Validação
+async create(data: IColaborador) {
     const { error } = colaboradorSchema.validate(data);
     if (error) {
       throw new AppError(error.details[0].message, 400);
     }
 
-    // Verificar duplicidade
     const emailExists = await colaboradorRepo.findByEmail(data.email);
     if (emailExists) {
       throw new AppError('Email já cadastrado', 400);
@@ -26,8 +24,31 @@ export class ColaboradorService {
       throw new AppError('CPF já cadastrado', 400);
     }
 
-    // Criar colaborador
-    const colaborador = await colaboradorRepo.create(data);
+    let dataNascimento: Date;
+    
+    if (typeof data.dataNascimento === 'string') {
+      if (/^\d{4}-\d{2}-\d{2}$/.test(data.dataNascimento)) {
+        dataNascimento = new Date(data.dataNascimento + 'T12:00:00Z');
+      } else {
+        dataNascimento = new Date(data.dataNascimento);
+      }
+    } else if (data.dataNascimento instanceof Date) {
+      dataNascimento = data.dataNascimento;
+    } else {
+      throw new AppError('Formato de data inválido', 400);
+    }
+
+    if (isNaN(dataNascimento.getTime())) {
+      throw new AppError('Data de nascimento inválida', 400);
+    }
+
+    console.log('Data convertida:', dataNascimento);
+    const colaboradorData = {
+      ...data,
+      dataNascimento
+    };
+
+    const colaborador = await colaboradorRepo.create(colaboradorData);
 
     return colaborador;
   }
