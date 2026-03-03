@@ -1,7 +1,6 @@
-import { PrismaClient, TipoDocumento } from '@prisma/client';
 import { ITipoDocumento } from '../models/interfaces';
-
-const prisma = new PrismaClient();
+import { TipoDocumento } from '@prisma/client';
+import { prisma } from '../database/prisma';
 
 export class TipoDocumentoRepository {
   async create(data: ITipoDocumento): Promise<TipoDocumento> {

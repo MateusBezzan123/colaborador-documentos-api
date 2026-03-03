@@ -1,7 +1,6 @@
-import { PrismaClient, Colaborador } from '@prisma/client';
 import { IColaborador } from '../models/interfaces';
-
-const prisma = new PrismaClient();
+import { Colaborador } from '@prisma/client';
+import { prisma } from '../database/prisma';
 
 export class ColaboradorRepository {
   async create(data: IColaborador): Promise<Colaborador> {

@@ -1,6 +1,5 @@
-import { PrismaClient, ColaboradorTipoDocumento } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { ColaboradorTipoDocumento } from '@prisma/client';
+import { prisma } from '../database/prisma';
 
 export class ColaboradorTipoDocumentoRepository {
   async create(colaboradorId: string, tipoDocumentoId: string): Promise<ColaboradorTipoDocumento> {

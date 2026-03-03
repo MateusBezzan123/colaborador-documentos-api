@@ -1,0 +1,689 @@
+{
+  "info": {
+    "name": "API Documentação Colaboradores",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Coleção completa para testar a API de Gerenciamento de Documentação de Colaboradores"
+  },
+  "item": [
+    {
+      "name": "Colaboradores",
+      "item": [
+        {
+          "name": "Criar Colaborador",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/colaboradores",
+              "host": ["{{base_url}}"],
+              "path": ["api", "colaboradores"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"João Silva\",\n  \"email\": \"joao.silva@email.com\",\n  \"cpf\": \"12345678901\",\n  \"dataNascimento\": \"1990-05-15\",\n  \"cargo\": \"Desenvolvedor Senior\",\n  \"departamento\": \"Tecnologia\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Listar Colaboradores",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/colaboradores?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "colaboradores"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar Colaboradores com Filtros",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/colaboradores?page=1&limit=10&departamento=Tecnologia&cargo=Desenvolvedor",
+              "host": ["{{base_url}}"],
+              "path": ["api", "colaboradores"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "departamento",
+                  "value": "Tecnologia"
+                },
+                {
+                  "key": "cargo",
+                  "value": "Desenvolvedor"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar Colaborador por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/colaboradores/{{colaborador_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "colaboradores", "{{colaborador_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar Colaborador",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/colaboradores/{{colaborador_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "colaboradores", "{{colaborador_id}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"João Silva Atualizado\",\n  \"email\": \"joao.atualizado@email.com\",\n  \"cpf\": \"12345678901\",\n  \"dataNascimento\": \"1990-05-15\",\n  \"cargo\": \"Tech Lead\",\n  \"departamento\": \"Tecnologia\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Deletar Colaborador (Soft Delete)",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/colaboradores/{{colaborador_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "colaboradores", "{{colaborador_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Vincular Tipos de Documento",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/colaboradores/{{colaborador_id}}/tipos-documento",
+              "host": ["{{base_url}}"],
+              "path": ["api", "colaboradores", "{{colaborador_id}}", "tipos-documento"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tiposDocumentoIds\": [\"{{tipo_documento_id_1}}\", \"{{tipo_documento_id_2}}\", \"{{tipo_documento_id_3}}\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "Desvincular Tipo de Documento",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/colaboradores/{{colaborador_id}}/tipos-documento/{{tipo_documento_id_1}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "colaboradores", "{{colaborador_id}}", "tipos-documento", "{{tipo_documento_id_1}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tipos de Documento",
+      "item": [
+        {
+          "name": "Criar Tipo de Documento",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/tipos-documento",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tipos-documento"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"CPF\",\n  \"descricao\": \"Cadastro de Pessoa Física\",\n  \"obrigatorio\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Listar Tipos de Documento",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/tipos-documento",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tipos-documento"]
+            }
+          }
+        },
+        {
+          "name": "Listar Tipos (incluindo inativos)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/tipos-documento?includeInativos=true",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tipos-documento"],
+              "query": [
+                {
+                  "key": "includeInativos",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar Tipo de Documento por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/tipos-documento/{{tipo_documento_id_1}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tipos-documento", "{{tipo_documento_id_1}}"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar Tipo de Documento",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/tipos-documento/{{tipo_documento_id_1}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tipos-documento", "{{tipo_documento_id_1}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"CPF (atualizado)\",\n  \"descricao\": \"Documento obrigatório para todos os colaboradores\",\n  \"obrigatorio\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Deletar Tipo de Documento (Soft Delete)",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/tipos-documento/{{tipo_documento_id_1}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tipos-documento", "{{tipo_documento_id_1}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Documentos",
+      "item": [
+        {
+          "name": "Enviar Documento (Versão 1)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/documentos",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documentos"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"colaboradorId\": \"{{colaborador_id}}\",\n  \"tipoDocumentoId\": \"{{tipo_documento_id_1}}\",\n  \"arquivoNome\": \"cpf-joao-silva.pdf\",\n  \"arquivoTamanho\": 1024,\n  \"mimeType\": \"application/pdf\",\n  \"observacao\": \"Primeira versão do documento\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Enviar Documento (Versão 2 - Atualização)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/documentos",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documentos"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"colaboradorId\": \"{{colaborador_id}}\",\n  \"tipoDocumentoId\": \"{{tipo_documento_id_1}}\",\n  \"arquivoNome\": \"cpf-joao-silva-atualizado.pdf\",\n  \"arquivoTamanho\": 2048,\n  \"mimeType\": \"application/pdf\",\n  \"observacao\": \"Segunda versão com dados corrigidos\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Enviar Outro Tipo de Documento",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/documentos",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documentos"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"colaboradorId\": \"{{colaborador_id}}\",\n  \"tipoDocumentoId\": \"{{tipo_documento_id_2}}\",\n  \"arquivoNome\": \"rg-joao-silva.jpg\",\n  \"arquivoTamanho\": 512,\n  \"mimeType\": \"image/jpeg\",\n  \"observacao\": \"Documento de identidade\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Listar Documentos Pendentes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/documentos/pendentes?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documentos", "pendentes"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar Pendentes com Filtros",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/documentos/pendentes?colaboradorId={{colaborador_id}}&tipoDocumentoId={{tipo_documento_id_3}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documentos", "pendentes"],
+              "query": [
+                {
+                  "key": "colaboradorId",
+                  "value": "{{colaborador_id}}"
+                },
+                {
+                  "key": "tipoDocumentoId",
+                  "value": "{{tipo_documento_id_3}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Ver Histórico de Versões",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/documentos/historico/{{colaborador_id}}/{{tipo_documento_id_1}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documentos", "historico", "{{colaborador_id}}", "{{tipo_documento_id_1}}"]
+            }
+          }
+        },
+        {
+          "name": "Últimos Envios",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/documentos/ultimos-envios?limit=5",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documentos", "ultimos-envios"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Estatísticas",
+      "item": [
+        {
+          "name": "Dashboard Estatísticas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/estatisticas/dashboard",
+              "host": ["{{base_url}}"],
+              "path": ["api", "estatisticas", "dashboard"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Fluxo Completo de Teste",
+      "item": [
+        {
+          "name": "1. Criar Colaborador",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', function() {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "const response = pm.response.json();",
+                  "pm.collectionVariables.set('colaborador_id', response.id);",
+                  "console.log('Colaborador ID:', response.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/colaboradores",
+              "host": ["{{base_url}}"],
+              "path": ["api", "colaboradores"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Maria Oliveira\",\n  \"email\": \"maria.oliveira@email.com\",\n  \"cpf\": \"98765432101\",\n  \"dataNascimento\": \"1988-03-20\",\n  \"cargo\": \"Analista de RH\",\n  \"departamento\": \"Recursos Humanos\"\n}"
+            }
+          }
+        },
+        {
+          "name": "2. Criar Tipos de Documento (Múltiplos)",
+          "item": [
+            {
+              "name": "Criar Tipo: CPF",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Status 201', function() {",
+                      "    pm.response.to.have.status(201);",
+                      "});",
+                      "",
+                      "const response = pm.response.json();",
+                      "pm.collectionVariables.set('tipo_documento_id_1', response.id);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/tipos-documento",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "tipos-documento"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"CPF\",\n  \"descricao\": \"Cadastro de Pessoa Física\",\n  \"obrigatorio\": true\n}"
+                }
+              }
+            },
+            {
+              "name": "Criar Tipo: RG",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Status 201', function() {",
+                      "    pm.response.to.have.status(201);",
+                      "});",
+                      "",
+                      "const response = pm.response.json();",
+                      "pm.collectionVariables.set('tipo_documento_id_2', response.id);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/tipos-documento",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "tipos-documento"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"RG\",\n  \"descricao\": \"Registro Geral\",\n  \"obrigatorio\": true\n}"
+                }
+              }
+            },
+            {
+              "name": "Criar Tipo: Comprovante Residência",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Status 201', function() {",
+                      "    pm.response.to.have.status(201);",
+                      "});",
+                      "",
+                      "const response = pm.response.json();",
+                      "pm.collectionVariables.set('tipo_documento_id_3', response.id);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/tipos-documento",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "tipos-documento"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nome\": \"Comprovante de Residência\",\n  \"descricao\": \"Conta de água, luz ou telefone\",\n  \"obrigatorio\": true\n}"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "3. Vincular Documentos ao Colaborador",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/colaboradores/{{colaborador_id}}/tipos-documento",
+              "host": ["{{base_url}}"],
+              "path": ["api", "colaboradores", "{{colaborador_id}}", "tipos-documento"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tiposDocumentoIds\": [\n    \"{{tipo_documento_id_1}}\",\n    \"{{tipo_documento_id_2}}\",\n    \"{{tipo_documento_id_3}}\"\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "4. Enviar Documentos (Alguns)",
+          "item": [
+            {
+              "name": "Enviar CPF",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/documentos",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "documentos"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"colaboradorId\": \"{{colaborador_id}}\",\n  \"tipoDocumentoId\": \"{{tipo_documento_id_1}}\",\n  \"arquivoNome\": \"cpf-maria.pdf\",\n  \"arquivoTamanho\": 1536,\n  \"mimeType\": \"application/pdf\",\n  \"observacao\": \"CPF enviado\"\n}"
+                }
+              }
+            },
+            {
+              "name": "Enviar RG",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/documentos",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "documentos"]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"colaboradorId\": \"{{colaborador_id}}\",\n  \"tipoDocumentoId\": \"{{tipo_documento_id_2}}\",\n  \"arquivoNome\": \"rg-maria.png\",\n  \"arquivoTamanho\": 768,\n  \"mimeType\": \"image/png\",\n  \"observacao\": \"RG enviado\"\n}"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "5. Verificar Pendências",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/documentos/pendentes?colaboradorId={{colaborador_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "documentos", "pendentes"],
+              "query": [
+                {
+                  "key": "colaboradorId",
+                  "value": "{{colaborador_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "6. Ver Dashboard Estatísticas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/estatisticas/dashboard",
+              "host": ["{{base_url}}"],
+              "path": ["api", "estatisticas", "dashboard"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "colaborador_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "tipo_documento_id_1",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "tipo_documento_id_2",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "tipo_documento_id_3",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
