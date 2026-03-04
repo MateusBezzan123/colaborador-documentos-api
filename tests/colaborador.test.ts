@@ -1,15 +1,24 @@
 import request from 'supertest';
 import app from '../src/index';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '../src/database/prisma';
 
 describe('Colaborador Controller', () => {
   beforeAll(async () => {
-    await prisma.documento.deleteMany();
-    await prisma.colaboradorTipoDocumento.deleteMany();
-    await prisma.colaborador.deleteMany();
-    await prisma.tipoDocumento.deleteMany();
+    try {
+      await prisma.documentoVersao.deleteMany();
+      
+      await prisma.documento.deleteMany();
+    
+      await prisma.colaboradorTipoDocumento.deleteMany();
+      
+      await prisma.colaborador.deleteMany();
+      
+      await prisma.tipoDocumento.deleteMany();
+      
+      console.log('✅ Dados de teste limpos com sucesso');
+    } catch (error) {
+      console.error('❌ Erro ao limpar dados:', error);
+    }
   });
 
   afterAll(async () => {
