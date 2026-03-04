@@ -8,7 +8,9 @@ const colaboradorRepo = new ColaboradorRepository();
 const vinculoRepo = new ColaboradorTipoDocumentoRepository();
 
 export class ColaboradorService {
-async create(data: IColaborador) {
+  async create(data: IColaborador) {
+    console.log('Dados recebidos no service (create):', data);
+
     const { error } = colaboradorSchema.validate(data);
     if (error) {
       throw new AppError(error.details[0].message, 400);
@@ -24,50 +26,25 @@ async create(data: IColaborador) {
       throw new AppError('CPF já cadastrado', 400);
     }
 
-    let dataNascimento: Date;
+    const dataNascimento = this.parseDate(data.dataNascimento);
     
-    if (typeof data.dataNascimento === 'string') {
-      if (/^\d{4}-\d{2}-\d{2}$/.test(data.dataNascimento)) {
-        dataNascimento = new Date(data.dataNascimento + 'T12:00:00Z');
-      } else {
-        dataNascimento = new Date(data.dataNascimento);
-      }
-    } else if (data.dataNascimento instanceof Date) {
-      dataNascimento = data.dataNascimento;
-    } else {
-      throw new AppError('Formato de data inválido', 400);
-    }
-
-    if (isNaN(dataNascimento.getTime())) {
-      throw new AppError('Data de nascimento inválida', 400);
-    }
-
-    console.log('Data convertida:', dataNascimento);
     const colaboradorData = {
       ...data,
       dataNascimento
     };
 
     const colaborador = await colaboradorRepo.create(colaboradorData);
-
-    return colaborador;
-  }
-
-  async findAll(page: number, limit: number, filters?: any) {
-    return colaboradorRepo.findAll(page, limit, filters);
-  }
-
-  async findById(id: string) {
-    const colaborador = await colaboradorRepo.findById(id);
-    
-    if (!colaborador) {
-      throw new AppError('Colaborador não encontrado', 404);
-    }
-
     return colaborador;
   }
 
   async update(id: string, data: Partial<IColaborador>) {
+    if (Object.keys(data).length > 0) {
+      const { error } = colaboradorSchema.validate(data, { allowUnknown: true, presence: 'optional' });
+      if (error) {
+        throw new AppError(error.details[0].message, 400);
+      }
+    }
+
     const colaborador = await this.findById(id);
 
     if (data.email && data.email !== colaborador.email) {
@@ -84,7 +61,45 @@ async create(data: IColaborador) {
       }
     }
 
-    return colaboradorRepo.update(id, data);
+    const updateData = { ...data };
+    if (updateData.dataNascimento) {
+      updateData.dataNascimento = this.parseDate(updateData.dataNascimento);
+    }
+
+    return colaboradorRepo.update(id, updateData);
+  }
+
+  private parseDate(date: any): Date {
+    if (date instanceof Date) {
+      return date;
+    }
+
+    if (typeof date === 'string') {
+      if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        return new Date(date + 'T12:00:00Z');
+      }
+      
+      const parsedDate = new Date(date);
+      if (!isNaN(parsedDate.getTime())) {
+        return parsedDate;
+      }
+    }
+
+    throw new AppError('Formato de data inválido. Use YYYY-MM-DD', 400);
+  }
+
+  async findAll(page: number, limit: number, filters?: any) {
+    return colaboradorRepo.findAll(page, limit, filters);
+  }
+
+  async findById(id: string) {
+    const colaborador = await colaboradorRepo.findById(id);
+    
+    if (!colaborador) {
+      throw new AppError('Colaborador não encontrado', 404);
+    }
+
+    return colaborador;
   }
 
   async delete(id: string) {
@@ -93,8 +108,7 @@ async create(data: IColaborador) {
   }
 
   async vincularTiposDocumento(colaboradorId: string, tiposDocumentoIds: string[]) {
-    const colaborador = await this.findById(colaboradorId);
-
+    await this.findById(colaboradorId);
     const quantidadeVinculada = await vinculoRepo.createMany(colaboradorId, tiposDocumentoIds);
 
     return {

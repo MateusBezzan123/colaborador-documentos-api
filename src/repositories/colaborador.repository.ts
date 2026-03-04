@@ -4,12 +4,16 @@ import { prisma } from '../database/prisma';
 
 export class ColaboradorRepository {
   async create(data: IColaborador): Promise<Colaborador> {
+    const dataNascimento = data.dataNascimento instanceof Date 
+      ? data.dataNascimento 
+      : new Date(data.dataNascimento);
+
     return prisma.colaborador.create({
       data: {
         nome: data.nome,
         email: data.email,
         cpf: data.cpf,
-        dataNascimento: data.dataNascimento,
+        dataNascimento: dataNascimento,
         cargo: data.cargo,
         departamento: data.departamento
       }
@@ -60,9 +64,17 @@ export class ColaboradorRepository {
   }
 
   async update(id: string, data: Partial<IColaborador>): Promise<Colaborador> {
+    const updateData: any = { ...data };
+    
+    if (updateData.dataNascimento) {
+      updateData.dataNascimento = updateData.dataNascimento instanceof Date 
+        ? updateData.dataNascimento 
+        : new Date(updateData.dataNascimento);
+    }
+
     return prisma.colaborador.update({
       where: { id },
-      data
+      data: updateData
     });
   }
 

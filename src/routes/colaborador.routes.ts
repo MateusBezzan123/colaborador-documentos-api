@@ -15,7 +15,12 @@ router.post(
 );
 router.get('/', controller.findAll);
 router.get('/:id', controller.findById);
-router.put('/:id', validateRequest(colaboradorSchema), controller.update);
+router.put(
+  '/:id', 
+  parseDateFields(['dataNascimento']),
+  validateRequest(colaboradorSchema), 
+  controller.update
+);
 router.delete('/:id', controller.delete);
 
 
